@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UIモック — Linkcode Deeprun</title>
+  <link rel="stylesheet" href="mock.css">
+</head>
+<body>
+  <div class="mock-wrap">
+    <div class="mock-top">
+      <h1>Linkcode Deeprun — UIモック</h1>
+      <a class="back" href="../index.html">← トップ</a>
+    </div>
+
+    <div class="tabs" role="tablist">
+      <button type="button" class="tab" role="tab" aria-selected="true" aria-controls="panel-map">マップ</button>
+      <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="panel-battle">バトル</button>
+    </div>
+
+    <div id="panel-map" class="panel is-active" role="tabpanel">
+      <div class="map-block">
+        <p class="map-note">§7 準拠の見た目のみ（進行ロジックなし）。ノードをクリックでハイライト。</p>
+
+        <section class="floor" aria-label="フロア3">
+          <h2 class="floor-title">Floor 3 — 終盤</h2>
+          <div class="node-row">
+            <button type="button" class="node node-rest">
+              <span class="node-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18"/><path d="M8 8h8"/><path d="M8 16h8"/></svg></span>
+              休息
+            </button>
+            <button type="button" class="node node-battle">
+              <span class="node-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#f85149" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M8 12h8"/></svg></span>
+              戦闘
+            </button>
+            <button type="button" class="node node-elite">
+              <span class="node-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#f0883e" stroke-width="2"><path d="M12 2l2 6h6l-5 4 2 7-5-4-5 4 2-7-5-4h6z"/></svg></span>
+              最終ボス前
+            </button>
+          </div>
+        </section>
+
+        <section class="floor" aria-label="フロア2">
+          <h2 class="floor-title">Floor 2 — 中ボス含む</h2>
+          <div class="node-row">
+            <button type="button" class="node node-battle">
+              <span class="node-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#f85149" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg></span>
+              戦闘
+            </button>
+            <button type="button" class="node node-elite">
+              <span class="node-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#f0883e" stroke-width="2"><rect x="5" y="5" width="14" height="14" rx="2"/></svg></span>
+              ファイアウォール
+            </button>
+            <button type="button" class="node node-shop">
+              <span class="node-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#58a6ff" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2 13h12l2-9H6"/></svg></span>
+              ショップ
+            </button>
+          </div>
+        </section>
+
+        <section class="floor" aria-label="フロア1">
+          <h2 class="floor-title">Floor 1 — 侵入</h2>
+          <div class="node-row">
+            <button type="button" class="node node-battle">
+              <span class="node-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#f85149" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg></span>
+              戦闘
+            </button>
+            <button type="button" class="node node-battle">
+              <span class="node-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#f85149" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg></span>
+              戦闘
+            </button>
+            <button type="button" class="node node-rest">
+              <span class="node-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16"/></svg></span>
+              分岐
+            </button>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div id="panel-battle" class="panel" role="tabpanel">
+      <div class="battle-grid">
+        <p class="map-note">§5 準拠。手札を選び、左→右のリンクゾーンへ。2枚揃うと合成トースト（ダミー）。意図は「切替」でモック表示。</p>
+
+        <div class="enemy-row">
+          <img
+            class="enemy-art"
+            src="../assets/concept/enemy-virus.png"
+            width="128"
+            height="128"
+            alt=""
+            onerror="this.onerror=null;this.src='../assets/concept/enemy-virus.svg'"
+          >
+          <div class="enemy-info">
+            <p class="enemy-name" id="enemyName">敵</p>
+            <div class="bar-block">
+              <div class="bar-label"><span>敵 HP</span><span id="enemyHpText">0 / 0</span></div>
+              <div class="bar-track">
+                <div id="enemyBarFill" class="bar-fill enemy" style="transform: scaleX(1)"></div>
+              </div>
+            </div>
+            <div class="intent-row">
+              <span class="intent-label">意図</span>
+              <div class="intent-icon" id="intentIcon" aria-hidden="true"></div>
+              <span id="intentLabel" class="intent-label">次ターン: 攻撃</span>
+              <button type="button" class="btn-ghost" id="btnIntent">意図を切替</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="bar-block">
+          <div class="bar-label"><span>プレイヤー HP</span><span id="playerHpText">0 / 0</span></div>
+          <div class="bar-track">
+            <div id="playerBarFill" class="bar-fill" style="transform: scaleX(1)"></div>
+          </div>
+        </div>
+
+        <div class="ep-row">
+          <span>EP</span>
+          <div class="ep-dots" id="epDots" aria-label="エナジー"></div>
+          <span id="epCap" class="intent-label">0 / 0</span>
+        </div>
+
+        <div class="link-zone">
+          <p class="link-zone-title">リンクゾーン（左 → 右で合成判定）</p>
+          <div class="link-slots">
+            <button type="button" class="slot" id="slotL" aria-label="リンク左スロット"></button>
+            <span class="link-arrow" aria-hidden="true">→</span>
+            <button type="button" class="slot" id="slotR" aria-label="リンク右スロット"></button>
+          </div>
+        </div>
+
+        <div class="hand-block">
+          <p class="hand-title">手札（最大5）</p>
+          <div id="handRow" class="hand-row"></div>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn btn-primary" id="btnEndTurn">ターン終了（リンク解除・EP回復）</button>
+        </div>
+        <p class="hint">操作: 手札クリックで選択 → 左スロット → 右スロット。EP がコストを下回すと配置できません。</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast-host" role="status" aria-live="polite"></div>
+
+  <script src="mock-data.js"></script>
+  <script src="mock.js"></script>
+</body>
+</html>
