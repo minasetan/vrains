@@ -90,32 +90,33 @@
       border-radius: 0 6px 6px 0;
       margin: 1rem 0;
     }
-    .gallery {
-      display: grid;
-      gap: 1.25rem;
-      margin-top: 1rem;
+    figure.doc-figure {
+      margin: 1rem 0 1.25rem;
+      padding: 0;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      max-width: 100%;
     }
-    @media (min-width: 640px) {
-      .gallery { grid-template-columns: 1fr 1fr; }
-    }
-    figure {
-      margin: 0;
-      padding: 0.75rem;
+    figure.doc-figure.bordered {
+      padding: 0.65rem;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 10px;
     }
-    figure img {
+    figure.doc-figure img {
       width: 100%;
+      max-width: 100%;
       height: auto;
       display: block;
-      border-radius: 6px;
+      border-radius: 8px;
       background: var(--bg);
     }
-    figcaption {
-      margin-top: 0.5rem;
+    figure.doc-figure figcaption {
+      margin-top: 0.45rem;
       font-size: 0.85rem;
       color: var(--muted);
+      line-height: 1.4;
     }
     footer.site {
       margin-top: 3rem;
@@ -153,6 +154,10 @@
     <section aria-labelledby="s1">
       <h2 id="s1">1. 概要・ワンフレーズ</h2>
       <p><strong>ネットの深層を数フロア進み、戦闘でデッキを編成しながら最終ボス「コア」の前にたどり着き、一撃の勝負でランを完結させる。</strong></p>
+      <figure class="doc-figure bordered">
+        <img src="./assets/concept/key-visual.png" alt="コンセプトキービジュアル：ネオン回路とホログラムのカードがリンクを描く" width="1600" height="900" loading="eager" decoding="async" fetchpriority="high" onerror="this.onerror=null;this.src='./assets/concept/key-visual.svg'">
+        <figcaption>コンセプトキービジュアル（作品全体のトーン）</figcaption>
+      </figure>
     </section>
 
     <section aria-labelledby="s2">
@@ -200,6 +205,10 @@ flowchart LR
 
     <section aria-labelledby="s5">
       <h2 id="s5">5. 戦闘ルール（MVP）</h2>
+      <figure class="doc-figure bordered">
+        <img src="./assets/concept/ui-mock.png" alt="戦闘画面UIモック：手札・リンクゾーン・敵とHPのレイアウト" width="1920" height="1080" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='./assets/concept/ui-mock.svg'">
+        <figcaption>戦闘画面モック（手札・リンクゾーン2枠・敵側の配置イメージ）</figcaption>
+      </figure>
       <h3>5.1 勝敗条件</h3>
       <ul>
         <li><strong>プレイヤーHP</strong> と <strong>敵HP</strong> を用意。いずれかが0以下で勝敗決定。</li>
@@ -239,6 +248,10 @@ flowchart LR
 
     <section aria-labelledby="s6">
       <h2 id="s6">6. カード設計枠（データ上の制約）</h2>
+      <figure class="doc-figure bordered" style="max-width: 22rem;">
+        <img src="./assets/concept/card-frame.png" alt="カード枠テンプレート：中央イラスト用の余白とサイバーな縁取り" width="400" height="560" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='./assets/concept/card-frame.svg'">
+        <figcaption>カード枠テンプレート（コモン想定・レアは差し替えで装飾増）</figcaption>
+      </figure>
       <table>
         <thead>
           <tr><th>項目</th><th>MVPの目安</th></tr>
@@ -292,6 +305,24 @@ flowchart LR
           <tr><td>最終ボス</td><td><strong>コア</strong></td><td>球体コアと光。フェーズ <strong>2</strong> のみ（HP閾値で切替）。</td></tr>
         </tbody>
       </table>
+
+      <h3>雑魚（ウイルス系）</h3>
+      <figure class="doc-figure bordered" style="max-width: 28rem;">
+        <img src="./assets/concept/enemy-virus.png" alt="雑魚敵コンセプト：ネオンのワーム状シルエット" width="512" height="512" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='./assets/concept/enemy-virus.svg'">
+        <figcaption>スパムワーム等に相当する小柄な脅威のシルエット</figcaption>
+      </figure>
+
+      <h3>中ボス — ファイアウォール</h3>
+      <figure class="doc-figure bordered">
+        <img src="./assets/concept/midboss-firewall.png" alt="中ボス：巨大なファイアウォール門とバリア" width="800" height="1000" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='./assets/concept/midboss-firewall.svg'">
+        <figcaption>建造物型。防御・ブロック行動の視覚的アンカー</figcaption>
+      </figure>
+
+      <h3>最終ボス — コア</h3>
+      <figure class="doc-figure bordered">
+        <img src="./assets/concept/finalboss-core.png" alt="最終ボス：発光する球体コアとコロナ" width="800" height="800" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='./assets/concept/finalboss-core.svg'">
+        <figcaption>球体コア＋光輪。フェーズ切替は色・輪の密度で表現可能</figcaption>
+      </figure>
     </section>
 
     <section aria-labelledby="s9">
@@ -338,58 +369,8 @@ flowchart LR
     </section>
 
     <section aria-labelledby="s13">
-      <h2 id="s13">13. コンセプトアート</h2>
-      <p>プロンプト全文は <a href="docs/concept-art-prompts.md">docs/concept-art-prompts.md</a>（Markdown）を参照。生成画像は同じファイル名で <code>assets/concept/</code> に <code>.png</code> / <code>.webp</code> を置くと、このページで自動的に優先表示されます。</p>
-      <div class="gallery">
-        <figure>
-          <picture>
-            <source srcset="assets/concept/key-visual.webp" type="image/webp">
-            <source srcset="assets/concept/key-visual.png" type="image/png">
-            <img src="assets/concept/key-visual.svg" width="1600" height="900" alt="キービジュアル" loading="lazy">
-          </picture>
-          <figcaption>1. キービジュアル（16:9）</figcaption>
-        </figure>
-        <figure>
-          <picture>
-            <source srcset="assets/concept/ui-mock.webp" type="image/webp">
-            <source srcset="assets/concept/ui-mock.png" type="image/png">
-            <img src="assets/concept/ui-mock.svg" width="1920" height="1080" alt="プレイ画面UIモック" loading="lazy">
-          </picture>
-          <figcaption>2. プレイ画面 UI モック</figcaption>
-        </figure>
-        <figure>
-          <picture>
-            <source srcset="assets/concept/card-frame.webp" type="image/webp">
-            <source srcset="assets/concept/card-frame.png" type="image/png">
-            <img src="assets/concept/card-frame.svg" width="400" height="560" alt="カード枠テンプレート" loading="lazy">
-          </picture>
-          <figcaption>3. カード枠テンプレート</figcaption>
-        </figure>
-        <figure>
-          <picture>
-            <source srcset="assets/concept/enemy-virus.webp" type="image/webp">
-            <source srcset="assets/concept/enemy-virus.png" type="image/png">
-            <img src="assets/concept/enemy-virus.svg" width="512" height="512" alt="雑魚敵ウイルス系" loading="lazy">
-          </picture>
-          <figcaption>4. 雑魚敵（ウイルス系）</figcaption>
-        </figure>
-        <figure>
-          <picture>
-            <source srcset="assets/concept/midboss-firewall.webp" type="image/webp">
-            <source srcset="assets/concept/midboss-firewall.png" type="image/png">
-            <img src="assets/concept/midboss-firewall.svg" width="800" height="1000" alt="中ボスファイアウォール" loading="lazy">
-          </picture>
-          <figcaption>5. 中ボス「ファイアウォール」</figcaption>
-        </figure>
-        <figure>
-          <picture>
-            <source srcset="assets/concept/finalboss-core.webp" type="image/webp">
-            <source srcset="assets/concept/finalboss-core.png" type="image/png">
-            <img src="assets/concept/finalboss-core.svg" width="800" height="800" alt="最終ボスコア" loading="lazy">
-          </picture>
-          <figcaption>6. 最終ボス「コア」</figcaption>
-        </figure>
-      </div>
+      <h2 id="s13">13. コンセプトアート・プロンプト</h2>
+      <p>各章に差し込んだビジュアルの生成プロンプト（日本語の狙い・英語本文・ネガティブ）は <a href="docs/concept-art-prompts.md">docs/concept-art-prompts.md</a> を参照。画像ファイルは <code>./assets/concept/</code> に配置（例: <code>key-visual.png</code>）。PNG が無い場合は同じベース名の SVG が自動で表示されます。</p>
     </section>
 
     <footer class="site">
