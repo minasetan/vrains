@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Linkcode Deeprun — バトル（本番UI）">
+  <title>バトル — Linkcode Deeprun</title>
+  <link rel="stylesheet" href="battle.css">
+</head>
+<body class="battle-app">
+  <div class="battle-shell">
+    <header class="battle-head">
+      <h1>バトル — Linkcode Deeprun</h1>
+      <a class="back" href="../index.html">← トップ</a>
+    </header>
+
+    <div id="loadError" class="load-error" role="alert"></div>
+
+    <main id="battleMain" class="battle-grid" hidden>
+      <section class="hud-panel enemy-row" aria-label="敵情報">
+        <img
+          id="enemyImg"
+          class="enemy-art"
+          src="../assets/concept/enemy-virus.png"
+          width="128"
+          height="128"
+          alt=""
+          data-fallback="../assets/concept/enemy-virus.svg"
+        >
+        <div class="enemy-info">
+          <p class="enemy-name" id="enemyName">—</p>
+          <div class="bar-block">
+            <div class="bar-label"><span>敵 HP</span><span id="enemyHpText">0 / 0</span></div>
+            <div class="bar-track">
+              <div id="enemyBarFill" class="bar-fill enemy" style="transform: scaleX(1)"></div>
+            </div>
+          </div>
+          <div class="intent-row">
+            <span class="intent-label">意図</span>
+            <div class="intent-icon" id="intentIcon" aria-hidden="true"></div>
+            <span id="intentLabel" class="intent-label">—</span>
+            <button type="button" class="btn-ghost" id="btnIntent">意図を切替</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="hud-panel" aria-label="プレイヤー">
+        <div class="bar-block">
+          <div class="bar-label"><span>プレイヤー HP</span><span id="playerHpText">0 / 0</span></div>
+          <div class="bar-track">
+            <div id="playerBarFill" class="bar-fill" style="transform: scaleX(1)"></div>
+          </div>
+        </div>
+        <div class="ep-row">
+          <span>EP</span>
+          <div class="ep-dots" id="epDots" aria-label="エナジー"></div>
+          <span id="epCap" class="intent-label">0 / 0</span>
+        </div>
+      </section>
+
+      <section class="hud-panel" aria-label="リンクゾーン">
+        <p class="link-zone-title">リンクゾーン（左 → 右で合成判定）</p>
+        <div class="link-slots">
+          <button type="button" class="slot" id="slotL" aria-label="リンク左スロット"></button>
+          <span class="link-arrow" aria-hidden="true">→</span>
+          <button type="button" class="slot" id="slotR" aria-label="リンク右スロット"></button>
+        </div>
+      </section>
+
+      <section class="hud-panel" aria-label="手札">
+        <p class="hand-title">手札</p>
+        <div id="handRow" class="hand-row"></div>
+        <div class="actions">
+          <button type="button" class="btn btn-primary" id="btnEndTurn">ターン終了</button>
+        </div>
+        <p class="hint">手札を選択後、左スロット → 右スロットの順に配置。データは <code>battle/data/*.json</code>。</p>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast-host" role="status" aria-live="polite"></div>
+
+  <script src="battle.js" defer></script>
+</body>
+</html>

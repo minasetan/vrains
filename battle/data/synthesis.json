@@ -1,0 +1,11 @@
+{
+  "table": {
+    "kernel|packet": { "name": "シンセ: バッファ溢出" },
+    "kernel|virus": { "name": "シンセ: ルートキット撃" },
+    "kernel|shield": { "name": "シンセ: カーネル障壁" },
+    "packet|shield": { "name": "シンセ: 暗号ペイロード" },
+    "packet|virus": { "name": "シンセ: ワーム中継" },
+    "shield|virus": { "name": "シンセ: 隔離突破" }
+  },
+  "overflowLabel": "オーバーフロー（微弱ダメージ＋小ドロー想定）"
+}
