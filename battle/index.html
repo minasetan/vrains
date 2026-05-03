@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Linkcode Deeprun — バトル（本番UI）">
+  <meta name="description" content="Linkcode Deeprun — バトル（シンプル版）">
   <title>バトル — Linkcode Deeprun</title>
   <link rel="stylesheet" href="battle.css">
 </head>
 <body class="battle-app">
   <div class="battle-shell">
-    <header class="battle-head">
+    <header class="battle-head hud-panel">
       <h1>バトル — Linkcode Deeprun</h1>
       <a class="back" href="../index.html">← トップ</a>
     </header>
@@ -21,25 +21,22 @@
         <img
           id="enemyImg"
           class="enemy-art"
-          src="../assets/concept/enemy-virus.png"
-          width="128"
-          height="128"
+          src="../assets/battle/V10.png"
+          width="160"
+          height="160"
           alt=""
-          data-fallback="../assets/concept/enemy-virus.svg"
         >
         <div class="enemy-info">
           <p class="enemy-name" id="enemyName">—</p>
           <div class="bar-block">
             <div class="bar-label"><span>敵 HP</span><span id="enemyHpText">0 / 0</span></div>
-            <div class="bar-track">
+            <div class="bar-track bar-track--enemy">
               <div id="enemyBarFill" class="bar-fill enemy" style="transform: scaleX(1)"></div>
             </div>
           </div>
           <div class="intent-row">
-            <span class="intent-label">意図</span>
-            <div class="intent-icon" id="intentIcon" aria-hidden="true"></div>
-            <span id="intentLabel" class="intent-label">—</span>
-            <button type="button" class="btn-ghost" id="btnIntent">意図を切替</button>
+            <img class="intent-art" src="../assets/battle/V06.png" width="120" height="40" alt="" loading="lazy">
+            <span class="intent-caption">ターン終了時に敵がプレイヤーへ攻撃します。</span>
           </div>
         </div>
       </section>
@@ -47,33 +44,24 @@
       <section class="hud-panel" aria-label="プレイヤー">
         <div class="bar-block">
           <div class="bar-label"><span>プレイヤー HP</span><span id="playerHpText">0 / 0</span></div>
-          <div class="bar-track">
+          <div class="bar-track bar-track--player">
             <div id="playerBarFill" class="bar-fill" style="transform: scaleX(1)"></div>
           </div>
         </div>
         <div class="ep-row">
-          <span>EP</span>
+          <img class="ep-art" src="../assets/battle/V04.png" width="96" height="32" alt="" loading="lazy">
           <div class="ep-dots" id="epDots" aria-label="エナジー"></div>
-          <span id="epCap" class="intent-label">0 / 0</span>
-        </div>
-      </section>
-
-      <section class="hud-panel" aria-label="リンクゾーン">
-        <p class="link-zone-title">リンクゾーン（左 → 右で合成判定）</p>
-        <div class="link-slots">
-          <button type="button" class="slot" id="slotL" aria-label="リンク左スロット"></button>
-          <span class="link-arrow" aria-hidden="true">→</span>
-          <button type="button" class="slot" id="slotR" aria-label="リンク右スロット"></button>
+          <span id="epCap" class="intent-caption">0 / 0</span>
         </div>
       </section>
 
       <section class="hud-panel" aria-label="手札">
-        <p class="hand-title">手札</p>
+        <p class="hand-title">手札（クリックでプレイ）</p>
         <div id="handRow" class="hand-row"></div>
         <div class="actions">
           <button type="button" class="btn btn-primary" id="btnEndTurn">ターン終了</button>
         </div>
-        <p class="hint">手札を選択後、左スロット → 右スロットの順に配置。データは <code>battle/data/*.json</code>。</p>
+        <p class="hint">カードは EP を消費して敵にダメージ。<strong>タイプ・リンク合成はありません。</strong> ターン終了で EP 回復・手札リセット・敵の反撃。</p>
       </section>
     </main>
   </div>

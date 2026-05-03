@@ -1,17 +1,11 @@
 {
-  "typeMeta": {
-    "kernel": { "label": "Kernel", "short": "K" },
-    "packet": { "label": "Packet", "short": "P" },
-    "virus": { "label": "Virus", "short": "V" },
-    "shield": { "label": "Shield", "short": "S" }
-  },
   "cards": [
-    { "id": "c1", "name": "Init Stack", "cost": 0, "type": "kernel", "rarity": "common" },
-    { "id": "c2", "name": "Burst Frame", "cost": 1, "type": "packet", "rarity": "common" },
-    { "id": "c3", "name": "Crawl Node", "cost": 2, "type": "virus", "rarity": "rare" },
-    { "id": "c4", "name": "Stack Guard", "cost": 1, "type": "shield", "rarity": "common" },
-    { "id": "c5", "name": "Null Route", "cost": 0, "type": "packet", "rarity": "legend" },
-    { "id": "c6", "name": "Kernel Pulse", "cost": 2, "type": "kernel", "rarity": "rare" },
-    { "id": "c7", "name": "Packet Flood", "cost": 1, "type": "packet", "rarity": "common" }
+    { "id": "c1", "name": "Init Stack", "cost": 0, "damage": 6, "rarity": "common" },
+    { "id": "c2", "name": "Burst Frame", "cost": 1, "damage": 8, "rarity": "common" },
+    { "id": "c3", "name": "Crawl Node", "cost": 2, "damage": 12, "rarity": "rare" },
+    { "id": "c4", "name": "Stack Guard", "cost": 1, "damage": 7, "rarity": "common" },
+    { "id": "c5", "name": "Null Route", "cost": 0, "damage": 5, "rarity": "legend" },
+    { "id": "c6", "name": "Kernel Pulse", "cost": 2, "damage": 11, "rarity": "rare" },
+    { "id": "c7", "name": "Packet Flood", "cost": 1, "damage": 9, "rarity": "common" }
   ]
 }

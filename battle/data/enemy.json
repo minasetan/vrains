@@ -3,5 +3,6 @@
   "enemyHp": 45,
   "playerHp": 80,
   "epMax": 3,
+  "turnDamage": 8,
   "starterHandIds": ["c1", "c2", "c3", "c4", "c5"]
 }

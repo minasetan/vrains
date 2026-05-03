@@ -133,7 +133,7 @@
 
     <header class="doc-head">
       <h1>ゲームデザイン文書（GDD）</h1>
-      <p class="sub">バージョン 0.1（企画段階） · 静的公開用HTML</p>
+      <p class="sub">バージョン 0.2（バトル簡易ルール追記） · 静的公開用HTML</p>
     </header>
 
     <section aria-labelledby="meta">
@@ -179,7 +179,7 @@
       <h2 id="s3">3. コアピラー（体験の柱）</h2>
       <ol>
         <li><strong>短い意思決定の連続</strong> — ターンが長引かないよう、手札とリソースに上限を設ける。</li>
-        <li><strong>「リンク」感のある盤面</strong> — 隣接したカードを組み合わせて強い一度きりの効果を出す（後述のリンク合成）。</li>
+        <li><strong>シンプルなカードの打ち出し</strong> — 現行の <a href="battle/index.html">バトル（シンプル版）</a> ではタイプ・リンク合成を置かず、EP と与ダメージ中心でまず遊べる形にする。</li>
         <li><strong>再プレイ性</strong> — カード報酬と経路選択で毎回デッキの形が変わる。MVPでは<strong>メタ進行なし</strong>でも成立するバランスを目指す。</li>
       </ol>
     </section>
@@ -206,44 +206,32 @@ flowchart LR
     <section aria-labelledby="s5">
       <h2 id="s5">5. 戦闘ルール（MVP）</h2>
       <figure class="doc-figure bordered">
-        <img src="./assets/concept/ui-mock.png" alt="戦闘画面UIモック：手札・リンクゾーン・敵とHPのレイアウト" width="1920" height="1080" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='./assets/concept/ui-mock.svg'">
-        <figcaption>戦闘画面モック（手札・リンクゾーン2枠・敵側の配置イメージ）</figcaption>
+        <img src="./assets/battle/V01.png" alt="バトル背景（本番UI用素材）" width="1600" height="900" loading="lazy" decoding="async">
+        <figcaption>バトル背景アセット（V01）。実デモは <a href="battle/index.html">battle/index.html</a>。</figcaption>
       </figure>
       <h3>5.1 勝敗条件</h3>
       <ul>
-        <li><strong>プレイヤーHP</strong> と <strong>敵HP</strong> を用意。いずれかが0以下で勝敗決定。</li>
-        <li>ラン開始時のプレイヤーHPは <strong>固定値</strong>（例: 80）。休息ノードで一部回復可能。</li>
+        <li><strong>プレイヤーHP</strong> と <strong>敵HP</strong>。いずれかが <strong>0 以下</strong> で勝敗。</li>
+        <li>プレイヤー初期 HP は JSON で定義（例: 80）。</li>
       </ul>
-      <h3>5.2 リソース</h3>
+      <h3>5.2 リソース（EP）</h3>
       <ul>
-        <li><strong>エナジー（EP）</strong>: ターン開始時に <strong>最大まで回復</strong>（最大値はバランス調整。初期案 <strong>3</strong>）。</li>
-        <li>カードには <strong>コスト（EP消費）</strong> を記載。0コストのカードも少数用意。</li>
+        <li><strong>EP</strong> は <strong>ターン終了処理のあと</strong> に最大まで回復（初期値は <code>enemy.json</code> の <code>epMax</code>）。</li>
+        <li>カードの <strong>コスト</strong> が現在の EP を超える場合はプレイ不可。</li>
       </ul>
-      <h3>5.3 手札・デッキ</h3>
+      <h3>5.3 手札・カード（シンプル版）</h3>
       <ul>
-        <li><strong>手札上限</strong> あり（初期案 <strong>5</strong>）。ターン終了時に上限を超えた分は捨て札へ。</li>
-        <li><strong>デッキ枚数</strong> 上限 <strong>30</strong>、下限 <strong>15</strong>（ショップ・報酬で増減してもこの範囲にクリップ）。</li>
-        <li>ドロー: ターン開始時 <strong>3枚</strong>（調整可）。デッキが尽きたら <strong>捨て札をシャッフルして山札</strong> に（ローグライト定番のルール）。</li>
+        <li><strong>リンクゾーン・合成・カードタイプは実装から省略</strong>（単純化のため）。</li>
+        <li>カードは <strong>コスト</strong>・<strong>与ダメージ（damage）</strong>・<strong>レア度</strong>（見た目）を持つ。データは <a href="battle/data/cards.json">battle/data/cards.json</a>。</li>
+        <li>開始手札は <a href="battle/data/enemy.json">enemy.json</a> の <code>starterHandIds</code>。</li>
       </ul>
-      <h3>5.4 「リンク合成」（本作独自のキーメカニク）</h3>
-      <ul>
-        <li>盤面に <strong>リンクゾーン</strong> として <strong>スロット2枠</strong>（左右）を置く。</li>
-        <li>ターン中 <strong>手札から最大2枚</strong> をリンクゾーンに <strong>隣接して</strong> 置ける（左→右の順で配置すると合成判定）。</li>
-        <li><strong>2枚が揃った瞬間</strong> に「リンク合成」が発動:
-          <ul>
-            <li>所定の <strong>合成テーブル</strong>（タイプの組み合わせ）に一致すれば、<strong>合成結果カード1枚</strong> の効果を <strong>即時発動</strong> し、使用済みの2枚は捨て札へ。</li>
-            <li>一致しない組み合わせの場合は <strong>「オーバーフロー」</strong>: 低火力の全体ダメージのみ、または弱いドローなど <strong>ペナルティ薄めの効果</strong> に固定（ルール説明を簡単にするため）。</li>
-          </ul>
-        </li>
-        <li>リンクゾーンは <strong>ターン終了時に空になる</strong>（または次ターン開始時にリセット）。MVPでは <strong>毎ターン1回まで</strong> リンク合成可。</li>
-      </ul>
-      <h3>5.5 カードの属性（MVP）</h3>
-      <p>カードは <strong>タイプ</strong> を1つ持つ（例: <code>kernel</code> / <code>packet</code> / <code>virus</code> / <code>shield</code>）。合成は主にタイプの組み合わせで決まる。攻撃・防御・ドロー・バフは <strong>数値を小さく</strong> 揃え、計算負荷を下げる。</p>
-      <h3>5.6 敵の行動</h3>
-      <ul>
-        <li><strong>意図アイコン</strong>（次ターン攻撃 / 防御 / バフ）を <strong>1つ</strong> 表示する簡易AI。</li>
-        <li>雑魚は <strong>パターン2〜3種</strong>、ボスは <strong>フェーズごとに意図が変わる</strong> 程度に留める。</li>
-      </ul>
+      <h3>5.4 ターンの流れ</h3>
+      <ol>
+        <li>プレイヤーは手札をクリックして <strong>その場でプレイ</strong>（敵 HP を減らす）。</li>
+        <li><strong>ターン終了</strong> で敵が <code>turnDamage</code> だけ反撃 → EP 全快 → 手札をスターターで再構築（デモ用）。</li>
+      </ol>
+      <h3>5.5 敵（シンプル版）</h3>
+      <p>ランダム意図 AI は未実装。UI は説明用画像のみ可。</p>
     </section>
 
     <section aria-labelledby="s6">
@@ -257,8 +245,8 @@ flowchart LR
           <tr><th>項目</th><th>MVPの目安</th></tr>
         </thead>
         <tbody>
-          <tr><td>総カードプール（実装目標）</td><td><strong>25〜35種</strong></td></tr>
-          <tr><td>カードにつきキーワード</td><td><strong>2個以内</strong></td></tr>
+          <tr><td>総カードプール（実装目標）</td><td><strong>25〜35種</strong>（現行デモは少数）</td></tr>
+          <tr><td>データ項目（シンプル版）</td><td><strong>cost / damage / rarity</strong>（タイプ・キーワードは省略可）</td></tr>
           <tr><td>レア度</td><td><strong>3段階</strong>（コモン / レア / レジェンド）— 出現率のみ差をつけ、効果は派手さに上限</td></tr>
           <tr><td>コストレンジ</td><td>0〜4 EP</td></tr>
         </tbody>
@@ -360,7 +348,7 @@ flowchart LR
           <tr><th>リスク</th><th>対策</th></tr>
         </thead>
         <tbody>
-          <tr><td>リンク合成の組み合わせ爆発</td><td>タイプを <strong>4種程度に固定</strong>、合成表を <strong>表形式で限定</strong>。</td></tr>
+          <tr><td>戦闘が単調化</td><td>JSON で <strong>damage / turnDamage / epMax</strong> を調整。後続で山札・敵パターンを追加。</td></tr>
           <tr><td>バランス調整に時間が溶ける</td><td>カード枚数と敵種を <strong>MVPで絞る</strong>。数値は <strong>CSVまたはJSON一括</strong> で調整。</td></tr>
           <tr><td>10分超え</td><td>フロア数・ノード数・敵HPを <strong>データだけで削れる</strong> 設計にする。</td></tr>
           <tr><td>版権・ブランド</td><td><strong>オリジナル名称のみ</strong>。実装・宣伝でも既存IPを連想させる表現を避ける。</td></tr>
