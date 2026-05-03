@@ -75,12 +75,28 @@
       .setVisible(false);
 
     var frameW = Math.min(1180, GAME_W - 80);
-    var frameH = 200;
+    var frameH = 236;
+    var frameBottomY = GAME_H - 20;
+
     this.dialogFrame = this.add
-      .image(GAME_W / 2, GAME_H - 24, "frame_V02")
+      .image(GAME_W / 2, frameBottomY, "frame_V02")
       .setOrigin(0.5, 1)
       .setDepth(10)
       .setDisplaySize(frameW, frameH);
+
+    var frameLeftX = GAME_W / 2 - frameW / 2;
+    var frameTopY = frameBottomY - frameH;
+
+    var padL = 52;
+    var padR = 52;
+    var padTop = 28;
+    var nameBlockH = 30;
+    var nameBodyGap = 10;
+
+    var innerLeft = frameLeftX + padL;
+    var innerTop = frameTopY + padTop;
+    var bodyTop = innerTop + nameBlockH + nameBodyGap;
+    var wrapW = frameW - padL - padR;
 
     var textStyleName = {
       fontFamily: '"Segoe UI", "Hiragino Sans", Meiryo, sans-serif',
@@ -97,38 +113,46 @@
       fontStyle: "normal",
       stroke: "#000000",
       strokeThickness: 4,
-      wordWrap: { width: frameW - 80 },
+      wordWrap: { width: wrapW },
       lineSpacing: 6,
     };
 
     this.nameText = this.add
-      .text(GAME_W / 2 - frameW / 2 + 36, GAME_H - frameH - 18, "", textStyleName)
+      .text(innerLeft, innerTop, "", textStyleName)
       .setDepth(11)
       .setOrigin(0, 0);
 
     this.bodyText = this.add
-      .text(GAME_W / 2 - frameW / 2 + 36, GAME_H - frameH + 14, "", textStyleBody)
+      .text(innerLeft, bodyTop, "", textStyleBody)
       .setDepth(11)
       .setOrigin(0, 0);
 
+    var hintPadR = 40;
+    var hintPadB = 34;
     this.hintText = this.add
-      .text(GAME_W / 2 + frameW / 2 - 24, GAME_H - 44, "クリック / Enter / Space で次へ", {
-        fontFamily: '"Segoe UI", Meiryo, sans-serif',
-        fontSize: "14px",
-        color: "rgba(255,255,255,0.82)",
-        stroke: "#000000",
-        strokeThickness: 3,
-      })
+      .text(
+        frameLeftX + frameW - hintPadR,
+        frameBottomY - hintPadB,
+        "クリック / Enter / Space で次へ",
+        {
+          fontFamily: '"Segoe UI", Meiryo, sans-serif',
+          fontSize: "14px",
+          color: "rgba(255,255,255,0.82)",
+          stroke: "#000000",
+          strokeThickness: 3,
+        }
+      )
       .setDepth(11)
       .setOrigin(1, 1);
 
-    var barMax = frameW - 48;
+    var barMax = frameW - padL - padR;
+    var barY = frameBottomY - 18;
     this.progressBg = this.add
-      .rectangle(GAME_W / 2, GAME_H - 10, barMax, 4, 0x30363d, 1)
+      .rectangle(GAME_W / 2, barY, barMax, 4, 0x30363d, 1)
       .setOrigin(0.5, 1)
       .setDepth(12);
     this.progressFill = this.add
-      .rectangle(GAME_W / 2 - barMax / 2, GAME_H - 10, 0, 4, 0x58a6ff, 1)
+      .rectangle(GAME_W / 2 - barMax / 2, barY, 0, 4, 0x58a6ff, 1)
       .setOrigin(0, 1)
       .setDepth(13);
 
