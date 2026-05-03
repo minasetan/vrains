@@ -15,28 +15,11 @@
 
   <p id="loadError" class="load-error" role="alert"></p>
 
-  <main id="novelMain" class="stage" hidden>
-    <div class="sprites" aria-hidden="true">
-      <div class="sprite-slot" id="slotLeft" data-side="left">
-        <img id="spriteLeft" alt="" decoding="async">
-      </div>
-      <div class="sprite-slot" id="slotRight" data-side="right">
-        <img id="spriteRight" alt="" decoding="async">
-      </div>
-    </div>
-
-    <div class="dialog-layer">
-      <button type="button" id="dialogAdvance" class="dialog-frame" aria-label="クリックで次へ">
-        <p class="dialog-name" id="dialogName">　</p>
-        <p class="dialog-text" id="dialogText"></p>
-        <p class="dialog-hint">クリック / Enter / Space で次へ · 最後で最初から</p>
-        <div class="dialog-progress" aria-hidden="true">
-          <div id="dialogProgressBar" class="dialog-progress-bar"></div>
-        </div>
-      </button>
-    </div>
+  <main id="novelMain" class="novel-stage" hidden>
+    <div id="game-container" class="game-container" aria-label="ノベル画面"></div>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
   <script src="novel.js" defer></script>
 </body>
 </html>
