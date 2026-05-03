@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <rect width="1920" height="1080" fill="#0d1117"/>
+  <rect x="60" y="60" width="1800" height="120" rx="8" fill="#161b22" stroke="#30363d"/>
+  <rect x="60" y="720" width="1800" height="300" rx="8" fill="#161b22" stroke="#30363d"/>
+  <rect x="760" y="400" width="180" height="240" rx="8" fill="#21262d" stroke="#58a6ff" stroke-width="2"/>
+  <rect x="980" y="400" width="180" height="240" rx="8" fill="#21262d" stroke="#58a6ff" stroke-width="2"/>
+  <text x="960" y="1040" text-anchor="middle" fill="#8b949e" font-family="Segoe UI,system-ui,sans-serif" font-size="24">UI mock placeholder</text>
+</svg>

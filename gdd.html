@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="リンクコード・ディープラン（仮）— デッキ構築ローグライト（超短縮）ゲームデザイン文書">
+  <title>企画書（GDD）— Linkcode Deeprun</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --border: #30363d;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --accent: #58a6ff;
+      --accent2: #a371f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, system-ui, sans-serif;
+      background: linear-gradient(165deg, var(--bg) 0%, #161b22 50%, #21262d 100%);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 1rem;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { max-width: 52rem; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+    header.doc-head {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    header.doc-head h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin: 0 0 0.5rem;
+      letter-spacing: -0.02em;
+    }
+    header.doc-head .sub {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin: 0;
+    }
+    nav.top {
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+    h2 {
+      font-size: 1.2rem;
+      margin: 2rem 0 0.75rem;
+      padding-bottom: 0.35rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+    h3 { font-size: 1.05rem; margin: 1.25rem 0 0.5rem; color: var(--muted); font-weight: 600; }
+    p { margin: 0.65rem 0; }
+    ul, ol { margin: 0.5rem 0; padding-left: 1.35rem; }
+    li { margin: 0.35rem 0; }
+    strong { color: var(--text); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+      margin: 0.75rem 0 1rem;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 0.5rem 0.65rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--surface); color: var(--muted); font-weight: 600; }
+    tr:nth-child(even) td { background: rgba(22, 27, 34, 0.5); }
+    .mermaid-wrap {
+      margin: 1rem 0;
+      padding: 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+    .note {
+      font-size: 0.88rem;
+      color: var(--muted);
+      padding: 0.75rem 1rem;
+      background: rgba(88, 166, 255, 0.08);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0;
+      margin: 1rem 0;
+    }
+    .gallery {
+      display: grid;
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+    @media (min-width: 640px) {
+      .gallery { grid-template-columns: 1fr 1fr; }
+    }
+    figure {
+      margin: 0;
+      padding: 0.75rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+    figure img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 6px;
+      background: var(--bg);
+    }
+    figcaption {
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    footer.site {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav class="top"><a href="index.html">← トップへ</a></nav>
+
+    <header class="doc-head">
+      <h1>ゲームデザイン文書（GDD）</h1>
+      <p class="sub">バージョン 0.1（企画段階） · 静的公開用HTML</p>
+    </header>
+
+    <section aria-labelledby="meta">
+      <h2 id="meta">文書情報</h2>
+      <table>
+        <thead>
+          <tr><th>項目</th><th>内容</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>仮タイトル</td><td><strong>リンクコード・ディープラン</strong>（Linkcode Deeprun）</td></tr>
+          <tr><td>プラットフォーム</td><td>Webブラウザ（GitHub Pages 等の静的ホスティング）</td></tr>
+          <tr><td>ジャンル</td><td>デッキ構築ローグライト（超短縮）</td></tr>
+        </tbody>
+      </table>
+      <p class="note">本企画はネット空間・リンク・短時間デュエルといった<strong>雰囲気のモチーフ</strong>に寄せたオリジナル作品である。<strong>既存作品の固有名詞・カード名・キャラクターは使用しない。</strong></p>
+    </section>
+
+    <section aria-labelledby="s1">
+      <h2 id="s1">1. 概要・ワンフレーズ</h2>
+      <p><strong>ネットの深層を数フロア進み、戦闘でデッキを編成しながら最終ボス「コア」の前にたどり着き、一撃の勝負でランを完結させる。</strong></p>
+    </section>
+
+    <section aria-labelledby="s2">
+      <h2 id="s2">2. 想定プレイ時間</h2>
+      <table>
+        <thead>
+          <tr><th>指標</th><th>目標</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1ラン全体</td><td><strong>8〜10分</strong></td></tr>
+          <tr><td>戦闘1回</td><td>約1〜2分</td></tr>
+          <tr><td>マップ上のノン戦闘イベント</td><td>各30秒〜1分</td></tr>
+        </tbody>
+      </table>
+      <p><strong>構造:</strong> フロア <strong>3</strong>（各フロア終了時にデッキ編成の機会）＋ <strong>最終ボス戦</strong> でラン終了。中ボスは <strong>1体</strong>（フロア2終了時またはフロア3直前）を想定し、総戦闘回数は <strong>通常戦4〜6回＋中ボス1＋最終ボス1</strong> 程度に抑える。</p>
+    </section>
+
+    <section aria-labelledby="s3">
+      <h2 id="s3">3. コアピラー（体験の柱）</h2>
+      <ol>
+        <li><strong>短い意思決定の連続</strong> — ターンが長引かないよう、手札とリソースに上限を設ける。</li>
+        <li><strong>「リンク」感のある盤面</strong> — 隣接したカードを組み合わせて強い一度きりの効果を出す（後述のリンク合成）。</li>
+        <li><strong>再プレイ性</strong> — カード報酬と経路選択で毎回デッキの形が変わる。MVPでは<strong>メタ進行なし</strong>でも成立するバランスを目指す。</li>
+      </ol>
+    </section>
+
+    <section aria-labelledby="s4">
+      <h2 id="s4">4. ゲームループ</h2>
+      <p>プレイヤーは各フロアで <strong>ノードを1つ選択</strong>（分岐は <strong>最大2択</strong>）。ノード種別に応じて戦闘・ショップ・休息などが発生し、戦闘後は <strong>カード報酬</strong> または <strong>ゴールド</strong> などでデッキが変化する。3フロア目終了後（または設計上マップの終端）で <strong>最終ボス</strong> に入る。</p>
+      <div class="mermaid-wrap">
+        <pre class="mermaid">
+flowchart LR
+  start[RunStart] --> floor[FloorN]
+  floor --> choice[PathChoice]
+  choice --> battle[Battle]
+  choice --> shop[ShopOrRest]
+  battle --> reward[CardReward]
+  shop --> floor2[NextFloor]
+  reward --> floor2
+  floor2 --> boss[Boss]
+  boss --> endNode[RunEnd]
+        </pre>
+      </div>
+    </section>
+
+    <section aria-labelledby="s5">
+      <h2 id="s5">5. 戦闘ルール（MVP）</h2>
+      <h3>5.1 勝敗条件</h3>
+      <ul>
+        <li><strong>プレイヤーHP</strong> と <strong>敵HP</strong> を用意。いずれかが0以下で勝敗決定。</li>
+        <li>ラン開始時のプレイヤーHPは <strong>固定値</strong>（例: 80）。休息ノードで一部回復可能。</li>
+      </ul>
+      <h3>5.2 リソース</h3>
+      <ul>
+        <li><strong>エナジー（EP）</strong>: ターン開始時に <strong>最大まで回復</strong>（最大値はバランス調整。初期案 <strong>3</strong>）。</li>
+        <li>カードには <strong>コスト（EP消費）</strong> を記載。0コストのカードも少数用意。</li>
+      </ul>
+      <h3>5.3 手札・デッキ</h3>
+      <ul>
+        <li><strong>手札上限</strong> あり（初期案 <strong>5</strong>）。ターン終了時に上限を超えた分は捨て札へ。</li>
+        <li><strong>デッキ枚数</strong> 上限 <strong>30</strong>、下限 <strong>15</strong>（ショップ・報酬で増減してもこの範囲にクリップ）。</li>
+        <li>ドロー: ターン開始時 <strong>3枚</strong>（調整可）。デッキが尽きたら <strong>捨て札をシャッフルして山札</strong> に（ローグライト定番のルール）。</li>
+      </ul>
+      <h3>5.4 「リンク合成」（本作独自のキーメカニク）</h3>
+      <ul>
+        <li>盤面に <strong>リンクゾーン</strong> として <strong>スロット2枠</strong>（左右）を置く。</li>
+        <li>ターン中 <strong>手札から最大2枚</strong> をリンクゾーンに <strong>隣接して</strong> 置ける（左→右の順で配置すると合成判定）。</li>
+        <li><strong>2枚が揃った瞬間</strong> に「リンク合成」が発動:
+          <ul>
+            <li>所定の <strong>合成テーブル</strong>（タイプの組み合わせ）に一致すれば、<strong>合成結果カード1枚</strong> の効果を <strong>即時発動</strong> し、使用済みの2枚は捨て札へ。</li>
+            <li>一致しない組み合わせの場合は <strong>「オーバーフロー」</strong>: 低火力の全体ダメージのみ、または弱いドローなど <strong>ペナルティ薄めの効果</strong> に固定（ルール説明を簡単にするため）。</li>
+          </ul>
+        </li>
+        <li>リンクゾーンは <strong>ターン終了時に空になる</strong>（または次ターン開始時にリセット）。MVPでは <strong>毎ターン1回まで</strong> リンク合成可。</li>
+      </ul>
+      <h3>5.5 カードの属性（MVP）</h3>
+      <p>カードは <strong>タイプ</strong> を1つ持つ（例: <code>kernel</code> / <code>packet</code> / <code>virus</code> / <code>shield</code>）。合成は主にタイプの組み合わせで決まる。攻撃・防御・ドロー・バフは <strong>数値を小さく</strong> 揃え、計算負荷を下げる。</p>
+      <h3>5.6 敵の行動</h3>
+      <ul>
+        <li><strong>意図アイコン</strong>（次ターン攻撃 / 防御 / バフ）を <strong>1つ</strong> 表示する簡易AI。</li>
+        <li>雑魚は <strong>パターン2〜3種</strong>、ボスは <strong>フェーズごとに意図が変わる</strong> 程度に留める。</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="s6">
+      <h2 id="s6">6. カード設計枠（データ上の制約）</h2>
+      <table>
+        <thead>
+          <tr><th>項目</th><th>MVPの目安</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>総カードプール（実装目標）</td><td><strong>25〜35種</strong></td></tr>
+          <tr><td>カードにつきキーワード</td><td><strong>2個以内</strong></td></tr>
+          <tr><td>レア度</td><td><strong>3段階</strong>（コモン / レア / レジェンド）— 出現率のみ差をつけ、効果は派手さに上限</td></tr>
+          <tr><td>コストレンジ</td><td>0〜4 EP</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section aria-labelledby="s7">
+      <h2 id="s7">7. マップ・進行</h2>
+      <h3>7.1 フロア構成</h3>
+      <table>
+        <thead>
+          <tr><th>フロア</th><th>内容（案）</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>ノード <strong>3〜4</strong>。通常戦中心。分岐1回。</td></tr>
+          <tr><td>2</td><td>ノード <strong>3〜4</strong>。<strong>中ボス</strong> を1回含む。</td></tr>
+          <tr><td>3</td><td>ノード <strong>2〜3</strong>。ショップまたは休息を1つ挟み、次で最終ボスへ。</td></tr>
+        </tbody>
+      </table>
+      <h3>7.2 ノード種別（MVP）</h3>
+      <table>
+        <thead>
+          <tr><th>種別</th><th>説明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>戦闘</td><td>雑魚。勝利後 <strong>カード3枚から1枚選択</strong> または <strong>ゴールド</strong>。</td></tr>
+          <tr><td>エリート</td><td>報酬強め。HP差し引き大きめ。</td></tr>
+          <tr><td>ショップ</td><td>ゴールドで <strong>カード購入</strong> / <strong>1枚削除（サーバーに送る）</strong>。</td></tr>
+          <tr><td>休息</td><td>HPを <strong>30%回復</strong>、または <strong>特定タイプのカード1枚を変換</strong>（どちらか選択）。</td></tr>
+          <tr><td>謎</td><td><strong>ランダム良イベント／小ペナルティ</strong>（MVPでは省略可）。</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section aria-labelledby="s8">
+      <h2 id="s8">8. 敵・ボス</h2>
+      <table>
+        <thead>
+          <tr><th>役割</th><th>名前（作中コードネーム）</th><th>概要</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>雑魚</td><td>スパムワーム / パケットスナッチャー 等</td><td>シルエット小さめ、行動単純。</td></tr>
+          <tr><td>中ボス</td><td><strong>ファイアウォール</strong></td><td>壁・門のような見た目。防御寄り、意図読みが鍵。</td></tr>
+          <tr><td>最終ボス</td><td><strong>コア</strong></td><td>球体コアと光。フェーズ <strong>2</strong> のみ（HP閾値で切替）。</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section aria-labelledby="s9">
+      <h2 id="s9">9. 勝利・敗北・計分（MVP）</h2>
+      <ul>
+        <li><strong>勝利</strong>: 最終ボス撃破で <strong>ランクリア</strong>。表示は <strong>クリアタイム</strong> と <strong>残りHP</strong> のみ（スコア式は v2 検討）。</li>
+        <li><strong>敗北</strong>: HP0で <strong>ラン終了</strong>。リトライはメニューから即座にもう一度。</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="s10">
+      <h2 id="s10">10. 技術前提</h2>
+      <ul>
+        <li><strong>静的ファイルのみ</strong>（HTML / CSS / JavaScript）。サーバ不要。</li>
+        <li>セーブ: <strong>localStorage</strong> にラン中断データ（任意。MVPでは <strong>中断なし</strong> でも可）。</li>
+        <li>カード・敵定義は <strong>JSON</strong>（または JS モジュールの定数）でホールド。</li>
+        <li>ビルドツールは <strong>任意</strong>（初期はバニラ + モジュールでも可）。</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="s11">
+      <h2 id="s11">11. スコープ外（v2 以降）</h2>
+      <ul>
+        <li>メタ進行（永続アンロック、難易度上昇）</li>
+        <li>複数キャラ・スターターデッキ差分</li>
+        <li>日替わりデイリー、実績、クラウドランキング</li>
+        <li>多言語対応</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="s12">
+      <h2 id="s12">12. リスクと対策</h2>
+      <table>
+        <thead>
+          <tr><th>リスク</th><th>対策</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>リンク合成の組み合わせ爆発</td><td>タイプを <strong>4種程度に固定</strong>、合成表を <strong>表形式で限定</strong>。</td></tr>
+          <tr><td>バランス調整に時間が溶ける</td><td>カード枚数と敵種を <strong>MVPで絞る</strong>。数値は <strong>CSVまたはJSON一括</strong> で調整。</td></tr>
+          <tr><td>10分超え</td><td>フロア数・ノード数・敵HPを <strong>データだけで削れる</strong> 設計にする。</td></tr>
+          <tr><td>版権・ブランド</td><td><strong>オリジナル名称のみ</strong>。実装・宣伝でも既存IPを連想させる表現を避ける。</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section aria-labelledby="s13">
+      <h2 id="s13">13. コンセプトアート</h2>
+      <p>プロンプト全文は <a href="docs/concept-art-prompts.md">docs/concept-art-prompts.md</a>（Markdown）を参照。生成画像は同じファイル名で <code>assets/concept/</code> に <code>.png</code> / <code>.webp</code> を置くと、このページで自動的に優先表示されます。</p>
+      <div class="gallery">
+        <figure>
+          <picture>
+            <source srcset="assets/concept/key-visual.webp" type="image/webp">
+            <source srcset="assets/concept/key-visual.png" type="image/png">
+            <img src="assets/concept/key-visual.svg" width="1600" height="900" alt="キービジュアル" loading="lazy">
+          </picture>
+          <figcaption>1. キービジュアル（16:9）</figcaption>
+        </figure>
+        <figure>
+          <picture>
+            <source srcset="assets/concept/ui-mock.webp" type="image/webp">
+            <source srcset="assets/concept/ui-mock.png" type="image/png">
+            <img src="assets/concept/ui-mock.svg" width="1920" height="1080" alt="プレイ画面UIモック" loading="lazy">
+          </picture>
+          <figcaption>2. プレイ画面 UI モック</figcaption>
+        </figure>
+        <figure>
+          <picture>
+            <source srcset="assets/concept/card-frame.webp" type="image/webp">
+            <source srcset="assets/concept/card-frame.png" type="image/png">
+            <img src="assets/concept/card-frame.svg" width="400" height="560" alt="カード枠テンプレート" loading="lazy">
+          </picture>
+          <figcaption>3. カード枠テンプレート</figcaption>
+        </figure>
+        <figure>
+          <picture>
+            <source srcset="assets/concept/enemy-virus.webp" type="image/webp">
+            <source srcset="assets/concept/enemy-virus.png" type="image/png">
+            <img src="assets/concept/enemy-virus.svg" width="512" height="512" alt="雑魚敵ウイルス系" loading="lazy">
+          </picture>
+          <figcaption>4. 雑魚敵（ウイルス系）</figcaption>
+        </figure>
+        <figure>
+          <picture>
+            <source srcset="assets/concept/midboss-firewall.webp" type="image/webp">
+            <source srcset="assets/concept/midboss-firewall.png" type="image/png">
+            <img src="assets/concept/midboss-firewall.svg" width="800" height="1000" alt="中ボスファイアウォール" loading="lazy">
+          </picture>
+          <figcaption>5. 中ボス「ファイアウォール」</figcaption>
+        </figure>
+        <figure>
+          <picture>
+            <source srcset="assets/concept/finalboss-core.webp" type="image/webp">
+            <source srcset="assets/concept/finalboss-core.png" type="image/png">
+            <img src="assets/concept/finalboss-core.svg" width="800" height="800" alt="最終ボスコア" loading="lazy">
+          </picture>
+          <figcaption>6. 最終ボス「コア」</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <footer class="site">
+      <p>Linkcode Deeprun（仮）— 企画書 HTML · <a href="docs/GDD.md">Markdown版 GDD</a></p>
+    </footer>
+  </div>
+
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: "dark",
+      securityLevel: "strict",
+      fontFamily: "Segoe UI, system-ui, sans-serif"
+    });
+    await mermaid.run({ querySelector: ".mermaid" });
+  </script>
+</body>
+</html>
