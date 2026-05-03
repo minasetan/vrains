@@ -4,7 +4,7 @@
 (function () {
   var BASE = "../assets/battle/";
   /** 画像・JS の更新後にブラウザキャッシュを避ける（必要なら値だけ上げる） */
-  var ASSET_Q = "?v=3";
+  var ASSET_Q = "?v=4";
   var GAME_W = 1280;
   var GAME_H = 720;
 
