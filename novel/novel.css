@@ -1,0 +1,169 @@
+/* Simple visual novel — V01 bg, V02 dialog, C01/C02 sprites */
+:root {
+  --text: #e6edf3;
+  --muted: #8b949e;
+  --name: #58a6ff;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+
+body.novel-app {
+  min-height: 100vh;
+  font-family: "Segoe UI", "Hiragino Sans", Meiryo, system-ui, sans-serif;
+  color: var(--text);
+  background: #0d1117 url("../assets/battle/V01.png") center / cover no-repeat fixed;
+  overflow: hidden;
+}
+
+.novel-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 1rem;
+  background: rgba(13, 17, 23, 0.65);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(48, 54, 61, 0.85);
+}
+.novel-top h1 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+.novel-top a {
+  color: var(--name);
+  font-size: 0.88rem;
+  text-decoration: none;
+}
+.novel-top a:hover { text-decoration: underline; }
+
+.stage {
+  position: relative;
+  height: 100vh;
+  padding-top: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.sprites {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 48px;
+  pointer-events: none;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: min(4vw, 2rem);
+  padding: 0 4vw  min(38vh, 280px);
+}
+
+.sprite-slot {
+  flex: 1;
+  max-width: min(42vw, 380px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  min-height: 40vh;
+}
+
+.sprite-slot.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+.sprite-slot.is-hidden img {
+  visibility: hidden;
+}
+
+.sprite-slot img {
+  max-height: min(58vh, 520px);
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.45));
+}
+
+.sprite-slot[data-side="left"] { justify-content: flex-start; }
+.sprite-slot[data-side="right"] { justify-content: flex-end; }
+
+.dialog-layer {
+  position: relative;
+  z-index: 10;
+  padding: 0 1rem 1.25rem;
+  max-width: 52rem;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.dialog-frame {
+  position: relative;
+  min-height: 9.5rem;
+  padding: 1rem 1.15rem 1.1rem;
+  background-color: rgba(22, 27, 34, 0.82);
+  background-image: url("../assets/battle/V02.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 12px;
+}
+
+.dialog-name {
+  margin: 0 0 0.35rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--name);
+}
+
+.dialog-text {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.65;
+  min-height: 4.5rem;
+}
+
+.dialog-hint {
+  margin: 0.6rem 0 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+  text-align: right;
+}
+
+.dialog-progress {
+  margin-top: 0.35rem;
+  height: 3px;
+  background: rgba(48, 54, 61, 0.9);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.dialog-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #58a6ff, #a371f7);
+  transition: width 0.2s ease;
+}
+
+.load-error {
+  display: none;
+  margin: 0 1rem 1rem;
+  padding: 0.75rem;
+  border: 1px solid #f85149;
+  border-radius: 8px;
+  background: rgba(248, 81, 73, 0.12);
+  font-size: 0.88rem;
+}
+.load-error.is-visible { display: block; }
+
+@media (max-width: 520px) {
+  .sprites {
+    padding-bottom: min(42vh, 240px);
+  }
+  .sprite-slot img {
+    max-height: min(44vh, 360px);
+  }
+}

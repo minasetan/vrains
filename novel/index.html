@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Linkcode Deeprun — ノベルシーン">
+  <title>ストーリー — Linkcode Deeprun</title>
+  <link rel="stylesheet" href="novel.css">
+</head>
+<body class="novel-app">
+  <header class="novel-top">
+    <h1>ノベル — Linkcode Deeprun</h1>
+    <a href="../index.html">← トップ</a>
+  </header>
+
+  <p id="loadError" class="load-error" role="alert"></p>
+
+  <main id="novelMain" class="stage" hidden>
+    <div class="sprites" aria-hidden="true">
+      <div class="sprite-slot" id="slotLeft" data-side="left">
+        <img id="spriteLeft" alt="" decoding="async">
+      </div>
+      <div class="sprite-slot" id="slotRight" data-side="right">
+        <img id="spriteRight" alt="" decoding="async">
+      </div>
+    </div>
+
+    <div class="dialog-layer">
+      <button type="button" id="dialogAdvance" class="dialog-frame" aria-label="クリックで次へ">
+        <p class="dialog-name" id="dialogName">　</p>
+        <p class="dialog-text" id="dialogText"></p>
+        <p class="dialog-hint">クリック / Enter / Space で次へ · 最後で最初から</p>
+        <div class="dialog-progress" aria-hidden="true">
+          <div id="dialogProgressBar" class="dialog-progress-bar"></div>
+        </div>
+      </button>
+    </div>
+  </main>
+
+  <script src="novel.js" defer></script>
+</body>
+</html>
