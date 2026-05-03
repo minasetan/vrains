@@ -4,7 +4,7 @@
 (function () {
   var BASE = "../assets/battle/";
   /** 画像・JS の更新後にブラウザキャッシュを避ける（必要なら値だけ上げる） */
-  var ASSET_Q = "?v=5";
+  var ASSET_Q = "?v=8";
   var GAME_W = 1280;
   var GAME_H = 720;
 
@@ -70,13 +70,13 @@
       );
     }
 
-    g.fillStyle(0x0d1117, 0.92);
+    g.fillStyle(0x000000, 0.48);
     g.fillRoundedRect(x, y, w, h, r);
 
     var mx = 36;
     var mt = 20;
     var mb = 52;
-    g.fillStyle(0xf0f6fc, 0.2);
+    g.fillStyle(0x050505, 0.42);
     g.fillRoundedRect(x + mx, y + mt, w - mx * 2, h - mt - mb, 14);
 
     g.lineStyle(5, vividA, 1);
@@ -110,15 +110,19 @@
     var frameLeftX = GAME_W / 2 - frameW / 2;
     var frameTopY = frameBottomY - frameH;
 
-    var charGroundY = frameTopY - 12;
+    /** 足元をウィンドウ下端よりやや下に：下半身がテキスト枠の後ろに回り込む一般的ノベル配置 */
+    var charGroundY = Math.min(GAME_H - 8, frameBottomY + 28);
+
+    var charLeftX = GAME_W * 0.28;
+    var charRightX = GAME_W * 0.72;
 
     this.charLeft = this.add
-      .image(280, charGroundY, textureKey("C01"))
+      .image(charLeftX, charGroundY, textureKey("C01"))
       .setOrigin(0.5, 1)
       .setDepth(4)
       .setVisible(false);
     this.charRight = this.add
-      .image(GAME_W - 280, charGroundY, textureKey("C02"))
+      .image(charRightX, charGroundY, textureKey("C02"))
       .setOrigin(0.5, 1)
       .setDepth(4)
       .setVisible(false);
@@ -136,23 +140,24 @@
     var bodyTop = innerTop + nameBlockH + nameBodyGap;
     var wrapW = frameW - padL - padR;
 
+    var fontVN =
+      '"Noto Sans JP", "Yu Gothic UI", YuGothic, "Hiragino Sans", Meiryo, sans-serif';
+
     var textStyleName = {
-      fontFamily: '"Segoe UI", "Hiragino Sans", Meiryo, sans-serif',
-      fontSize: "20px",
-      color: "#0d1117",
+      fontFamily: fontVN,
+      fontSize: "21px",
+      color: "#f6f8fa",
       fontStyle: "bold",
-      stroke: "#ffffff",
-      strokeThickness: 3,
+      strokeThickness: 0,
     };
     var textStyleBody = {
-      fontFamily: '"Segoe UI", "Hiragino Sans", Meiryo, sans-serif',
-      fontSize: "19px",
-      color: "#161b22",
+      fontFamily: fontVN,
+      fontSize: "20px",
+      color: "#e6edf3",
       fontStyle: "normal",
-      stroke: "#ffffff",
-      strokeThickness: 2,
+      strokeThickness: 0,
       wordWrap: { width: wrapW },
-      lineSpacing: 6,
+      lineSpacing: 8,
     };
 
     this.nameText = this.add
@@ -173,11 +178,10 @@
         frameBottomY - hintPadB,
         "クリック / Enter / Space で次へ",
         {
-          fontFamily: '"Segoe UI", Meiryo, sans-serif',
-          fontSize: "14px",
-          color: "#30363d",
-          stroke: "#ffffff",
-          strokeThickness: 2,
+          fontFamily: fontVN,
+          fontSize: "13px",
+          color: "#8b949e",
+          strokeThickness: 0,
         }
       )
       .setDepth(20)
@@ -219,14 +223,19 @@
     img.setPosition(targetW / 2, targetH / 2);
   };
 
-  NovelScene.prototype.fitSpriteHeight = function (sprite, maxH) {
-    var frame = sprite.frame;
-    if (!frame) return;
-    var ih = frame.height;
-    var iw = frame.width;
-    if (!ih) return;
-    var h = Math.min(maxH, ih * 1.1);
+  /** 縦を画面に合わせて大きく表示。横幅が広すぎるときは幅優先で縮小 */
+  NovelScene.prototype.fitSpritePortrait = function (sprite, maxH, maxW) {
+    var fr = sprite.frame;
+    if (!fr) return;
+    var ih = fr.height;
+    var iw = fr.width;
+    if (!ih || !iw) return;
+    var h = maxH;
     var w = (iw / ih) * h;
+    if (w > maxW) {
+      w = maxW;
+      h = (ih / iw) * w;
+    }
     sprite.setDisplaySize(w, h);
   };
 
@@ -237,15 +246,16 @@
     var sid = line.sprite || "C01";
     var key = textureKey(sid);
 
-    var maxCharH = 420;
+    var maxCharH = Math.round(GAME_H * 0.88);
+    var maxCharW = GAME_W * 0.42;
     if (side === "right") {
       this.charRight.setTexture(key);
-      this.fitSpriteHeight(this.charRight, maxCharH);
+      this.fitSpritePortrait(this.charRight, maxCharH, maxCharW);
       this.charRight.setVisible(true);
       this.charLeft.setVisible(false);
     } else {
       this.charLeft.setTexture(key);
-      this.fitSpriteHeight(this.charLeft, maxCharH);
+      this.fitSpritePortrait(this.charLeft, maxCharH, maxCharW);
       this.charLeft.setVisible(true);
       this.charRight.setVisible(false);
     }
