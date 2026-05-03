@@ -1,10 +1,10 @@
 /**
- * Phaser 3 — scenario.json 駆動ノベル（V01 背景 / V02 枠 / C01・C02）
+ * Phaser 3 — scenario.json 駆動ノベル（V01 背景 / 描画のみのメッセージ枠 / C01・C02）
  */
 (function () {
   var BASE = "../assets/battle/";
   /** 画像・JS の更新後にブラウザキャッシュを避ける（必要なら値だけ上げる） */
-  var ASSET_Q = "?v=4";
+  var ASSET_Q = "?v=5";
   var GAME_W = 1280;
   var GAME_H = 720;
 
@@ -34,7 +34,6 @@
 
   NovelScene.prototype.preload = function () {
     this.load.image("bg_V01", BASE + "V01.png" + ASSET_Q);
-    this.load.image("frame_V02", BASE + "V02.png" + ASSET_Q);
     this.load.image(textureKey("C01"), BASE + "C01.png" + ASSET_Q);
     this.load.image(textureKey("C02"), BASE + "C02.png" + ASSET_Q);
     this.load.json("scenario", "data/scenario.json" + ASSET_Q);
@@ -46,6 +45,46 @@
           " · HTTP で開いているか確認してください。"
       );
     });
+  };
+
+  /** メッセージ枠（画像不使用）：ビビッドなアウトライン＋グロー */
+  NovelScene.prototype.drawMessageWindow = function (x, y, w, h) {
+    var g = this.add.graphics();
+    var r = 18;
+    var vividA = 0xff00dd;
+    var vividB = 0x00fff7;
+    var layers = 14;
+    var i;
+    for (i = layers; i >= 1; i--) {
+      var spread = i * 2.2;
+      var alpha = 0.04 + (layers + 1 - i) * 0.028;
+      if (alpha > 0.62) alpha = 0.62;
+      var col = i % 2 === 0 ? vividA : vividB;
+      g.lineStyle(Math.max(2.5, i * 0.55), col, alpha);
+      g.strokeRoundedRect(
+        x - spread,
+        y - spread,
+        w + spread * 2,
+        h + spread * 2,
+        r + spread * 0.35
+      );
+    }
+
+    g.fillStyle(0x0d1117, 0.92);
+    g.fillRoundedRect(x, y, w, h, r);
+
+    var mx = 36;
+    var mt = 20;
+    var mb = 52;
+    g.fillStyle(0xf0f6fc, 0.2);
+    g.fillRoundedRect(x + mx, y + mt, w - mx * 2, h - mt - mb, 14);
+
+    g.lineStyle(5, vividA, 1);
+    g.strokeRoundedRect(x, y, w, h, r);
+    g.lineStyle(3, vividB, 1);
+    g.strokeRoundedRect(x + 2, y + 2, w - 4, h - 4, r - 2);
+
+    return g.setDepth(10);
   };
 
   NovelScene.prototype.create = function () {
@@ -84,24 +123,7 @@
       .setDepth(4)
       .setVisible(false);
 
-    this.dialogFrame = this.add
-      .image(GAME_W / 2, frameBottomY, "frame_V02")
-      .setOrigin(0.5, 1)
-      .setDepth(10)
-      .setDisplaySize(frameW, frameH);
-
-    var panelMarginX = 36;
-    var panelMarginTop = 20;
-    var panelMarginBottom = 52;
-    var panelW = frameW - panelMarginX * 2;
-    var panelH = frameH - panelMarginTop - panelMarginBottom;
-    var panelX = frameLeftX + panelMarginX;
-    var panelY = frameTopY + panelMarginTop;
-    this.textPanel = this.add
-      .graphics()
-      .fillStyle(0xf8fafc, 0.42)
-      .fillRoundedRect(panelX, panelY, panelW, panelH, 14)
-      .setDepth(10);
+    this.msgWindow = this.drawMessageWindow(frameLeftX, frameTopY, frameW, frameH);
 
     var padL = 56;
     var padR = 56;
