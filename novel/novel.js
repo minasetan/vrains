@@ -3,6 +3,8 @@
  */
 (function () {
   var BASE = "../assets/battle/";
+  /** 画像・JS の更新後にブラウザキャッシュを避ける（必要なら値だけ上げる） */
+  var ASSET_Q = "?v=3";
   var GAME_W = 1280;
   var GAME_H = 720;
 
@@ -31,11 +33,11 @@
   NovelScene.prototype.constructor = NovelScene;
 
   NovelScene.prototype.preload = function () {
-    this.load.image("bg_V01", BASE + "V01.png");
-    this.load.image("frame_V02", BASE + "V02.png");
-    this.load.image(textureKey("C01"), BASE + "C01.png");
-    this.load.image(textureKey("C02"), BASE + "C02.png");
-    this.load.json("scenario", "data/scenario.json");
+    this.load.image("bg_V01", BASE + "V01.png" + ASSET_Q);
+    this.load.image("frame_V02", BASE + "V02.png" + ASSET_Q);
+    this.load.image(textureKey("C01"), BASE + "C01.png" + ASSET_Q);
+    this.load.image(textureKey("C02"), BASE + "C02.png" + ASSET_Q);
+    this.load.json("scenario", "data/scenario.json" + ASSET_Q);
     var self = this;
     this.load.once("loaderror", function (file) {
       showDomError(
@@ -63,20 +65,24 @@
     this.bg = this.add.image(GAME_W / 2, GAME_H / 2, "bg_V01").setDepth(0);
     this.fitCover(this.bg, GAME_W, GAME_H);
 
-    this.charLeft = this.add
-      .image(280, GAME_H - 40, textureKey("C01"))
-      .setOrigin(0.5, 1)
-      .setDepth(5)
-      .setVisible(false);
-    this.charRight = this.add
-      .image(GAME_W - 280, GAME_H - 40, textureKey("C02"))
-      .setOrigin(0.5, 1)
-      .setDepth(5)
-      .setVisible(false);
-
     var frameW = Math.min(1180, GAME_W - 80);
     var frameH = 236;
     var frameBottomY = GAME_H - 20;
+    var frameLeftX = GAME_W / 2 - frameW / 2;
+    var frameTopY = frameBottomY - frameH;
+
+    var charGroundY = frameTopY - 12;
+
+    this.charLeft = this.add
+      .image(280, charGroundY, textureKey("C01"))
+      .setOrigin(0.5, 1)
+      .setDepth(4)
+      .setVisible(false);
+    this.charRight = this.add
+      .image(GAME_W - 280, charGroundY, textureKey("C02"))
+      .setOrigin(0.5, 1)
+      .setDepth(4)
+      .setVisible(false);
 
     this.dialogFrame = this.add
       .image(GAME_W / 2, frameBottomY, "frame_V02")
@@ -84,12 +90,22 @@
       .setDepth(10)
       .setDisplaySize(frameW, frameH);
 
-    var frameLeftX = GAME_W / 2 - frameW / 2;
-    var frameTopY = frameBottomY - frameH;
+    var panelMarginX = 36;
+    var panelMarginTop = 20;
+    var panelMarginBottom = 52;
+    var panelW = frameW - panelMarginX * 2;
+    var panelH = frameH - panelMarginTop - panelMarginBottom;
+    var panelX = frameLeftX + panelMarginX;
+    var panelY = frameTopY + panelMarginTop;
+    this.textPanel = this.add
+      .graphics()
+      .fillStyle(0xf8fafc, 0.42)
+      .fillRoundedRect(panelX, panelY, panelW, panelH, 14)
+      .setDepth(10);
 
-    var padL = 52;
-    var padR = 52;
-    var padTop = 28;
+    var padL = 56;
+    var padR = 56;
+    var padTop = 32;
     var nameBlockH = 30;
     var nameBodyGap = 10;
 
@@ -101,30 +117,30 @@
     var textStyleName = {
       fontFamily: '"Segoe UI", "Hiragino Sans", Meiryo, sans-serif',
       fontSize: "20px",
-      color: "#f0f6fc",
+      color: "#0d1117",
       fontStyle: "bold",
-      stroke: "#000000",
-      strokeThickness: 5,
+      stroke: "#ffffff",
+      strokeThickness: 3,
     };
     var textStyleBody = {
       fontFamily: '"Segoe UI", "Hiragino Sans", Meiryo, sans-serif',
       fontSize: "19px",
-      color: "#ffffff",
+      color: "#161b22",
       fontStyle: "normal",
-      stroke: "#000000",
-      strokeThickness: 4,
+      stroke: "#ffffff",
+      strokeThickness: 2,
       wordWrap: { width: wrapW },
       lineSpacing: 6,
     };
 
     this.nameText = this.add
       .text(innerLeft, innerTop, "", textStyleName)
-      .setDepth(11)
+      .setDepth(20)
       .setOrigin(0, 0);
 
     this.bodyText = this.add
       .text(innerLeft, bodyTop, "", textStyleBody)
-      .setDepth(11)
+      .setDepth(20)
       .setOrigin(0, 0);
 
     var hintPadR = 40;
@@ -137,24 +153,24 @@
         {
           fontFamily: '"Segoe UI", Meiryo, sans-serif',
           fontSize: "14px",
-          color: "rgba(255,255,255,0.82)",
-          stroke: "#000000",
-          strokeThickness: 3,
+          color: "#30363d",
+          stroke: "#ffffff",
+          strokeThickness: 2,
         }
       )
-      .setDepth(11)
+      .setDepth(20)
       .setOrigin(1, 1);
 
     var barMax = frameW - padL - padR;
     var barY = frameBottomY - 18;
     this.progressBg = this.add
-      .rectangle(GAME_W / 2, barY, barMax, 4, 0x30363d, 1)
+      .rectangle(GAME_W / 2, barY, barMax, 4, 0x8b949e, 1)
       .setOrigin(0.5, 1)
-      .setDepth(12);
+      .setDepth(21);
     this.progressFill = this.add
-      .rectangle(GAME_W / 2 - barMax / 2, barY, 0, 4, 0x58a6ff, 1)
+      .rectangle(GAME_W / 2 - barMax / 2, barY, 0, 4, 0x0969da, 1)
       .setOrigin(0, 1)
-      .setDepth(13);
+      .setDepth(22);
 
     var self = this;
     this.input.on("pointerdown", function () {
